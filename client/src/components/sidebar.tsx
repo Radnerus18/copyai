@@ -5,7 +5,7 @@ import application from "../assets/ai-images/applications.png";
 import assets from "../assets/ai-images/assets.png";
 import settings from "../assets/ai-images/settings.png";
 import menuBtn from "../assets/ai-images/menu.png";
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography, Button } from "@mui/material";
 
 interface Image {
   id: Number;
@@ -19,6 +19,7 @@ interface ImgStyles {
 }
 interface SidebarProps {
   urlData: any;
+  onClickmenu: any;
 }
 const logoImgs: Image[] = [
   { id: 0, src: aiLogo, alt: "" },
@@ -37,19 +38,40 @@ const bgStyle: ImgStyles = {
   },
 };
 
-const SideBar: React.FC<SidebarProps> = ({ urlData }) => {
-  const [state, setState] = useState<string>();
+const SideBar: React.FC<SidebarProps> = ({ urlData, onClickmenu }) => {
+  const [state, setState] = useState<boolean>(true);
   const onselectImg = (e: any) => {
-    setState(e.target.alt);
     urlData(e.target.alt);
+  };
+  const menuToggle = () => {
+    let navOpen = !state;
+    setState(navOpen);
+    onClickmenu(navOpen);
   };
   return (
     <Stack
       direction="column"
       justifyContent="center"
       alignItems="center"
-      spacing={5}
+      spacing={0}
     >
+      <Button
+        variant="outlined"
+        onClick={menuToggle}
+        sx={{
+          left: 65,
+          top: 38,
+          minWidth: "32px",
+          backgroundColor: "white",
+          padding: `5px`,
+          borderRadius: 2,
+          "&:hover": {
+            backgroundColor: "white", // Background color on hover
+          },
+        }}
+      >
+        <img src={menuBtn} alt="menu" />
+      </Button>
       {logoImgs.map((img, index) =>
         index !== 4 ? (
           <Grid
@@ -59,6 +81,7 @@ const SideBar: React.FC<SidebarProps> = ({ urlData }) => {
             justifyContent="center"
             alignItems="center"
             gap={1}
+            sx={{ marginTop: "-10px", marginBottom: "50px" }}
           >
             <img
               src={img.src}
@@ -68,7 +91,7 @@ const SideBar: React.FC<SidebarProps> = ({ urlData }) => {
             />
             <Typography
               variant="caption"
-              sx={{ color: "white", fontSize: "1.2rem" }}
+              sx={{ color: "white", fontSize: "1rem" }}
             >
               {img.alt}
             </Typography>
@@ -82,7 +105,6 @@ const SideBar: React.FC<SidebarProps> = ({ urlData }) => {
             alignItems="center"
             gap={1}
             marginTop={"350px !important"}
-            paddingBottom={"42px"}
           >
             <img
               src={img.src}
