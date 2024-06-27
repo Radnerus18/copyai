@@ -3,6 +3,7 @@ const errorFunc = require("../utils/errorFunct");
 const joi = require("joi");
 const securedPassword = require("../utils/securePassword");
 const bcrypt = require("bcryptjs");
+const createSecretToken = require("../utils/secretToken");
 const addUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -19,7 +20,13 @@ const addUser = async (req, res) => {
       email: email,
       password: hashPwd,
     });
+    const token = createSecretToken(newUser._id);
+
     if (newUser) {
+      res.cookie("token", token, {
+        httpOnly: false,
+        withCredentials: true,
+      });
       return res.json(errorFunc(false, "User Created", newUser));
     } else {
       res.status(403);
@@ -38,12 +45,18 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({
       email: email,
     });
-    console.log(req.body);
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    const token = createSecretToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: false,
+      withCredentials: true,
+    });
     if (!user) {
       return res.json(errorFunc(true, "Sign Up First"));
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
+      console.log(token);
       res.status(200);
       return res.json(errorFunc(false, "Loggin Successful", user));
     } else {

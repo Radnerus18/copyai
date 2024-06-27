@@ -6,5 +6,5 @@ const router = expressR.Router();
 
 router.get("/", home);
 router.post("/signup", userValidation, addUser);
-router.post("/login", userValidation, loginUser);
+router.post("/login", loginUser);
 module.exports = router;
