@@ -28,11 +28,22 @@ const Login = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
   const handleLogin = async () => {
-    const response = await axios.post("http://localhost:4000", inputs);
     try {
-      if (response.data === "success") {
-        console.log("Logged in");
-      }
+      const response = await axios.post("http://localhost:4000/login", {
+        email: inputs.email,
+        password: inputs.password,
+      });
+      console.log(response.data.message);
+    } catch (err) {
+      console.log("Error in sending data", err);
+    }
+  };
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/signup", {
+        ...inputs,
+      });
+      console.log(response.data.message);
     } catch (err) {
       console.log("Error in sending data", err);
     }
@@ -82,19 +93,21 @@ const Login = () => {
 
         <FormControl sx={{ m: 1 }}>
           <InputLabel htmlFor="my-name">Name</InputLabel>
-          <Input id="my-name" name="username" />
+          <Input id="my-name" name="username" onChange={handleChange} />
         </FormControl>
         <FormControl sx={{ m: 1 }}>
           <InputLabel htmlFor="my-mail">Email</InputLabel>
-          <Input id="my-mail" name="email" />
+          <Input id="my-mail" name="email" onChange={handleChange} />
         </FormControl>
 
         <FormControl sx={{ m: 1 }}>
           <InputLabel htmlFor="my-pass">Password</InputLabel>
-          <Input id="my-pass" name="password" />
+          <Input id="my-pass" name="password" onChange={handleChange} />
         </FormControl>
       </Paper>
-      <Button variant="contained">Sign Up</Button>
+      <Button variant="contained" onClick={handleSignup}>
+        Sign Up
+      </Button>
     </Box>
   );
 };

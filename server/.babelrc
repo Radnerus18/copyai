@@ -1,0 +1,6 @@
+{
+  "presets": [
+    "@babel/preset-env", // Transpile to current Node.js version
+    "@babel/preset-typescript" // Transpile TypeScript syntax
+  ]
+}
