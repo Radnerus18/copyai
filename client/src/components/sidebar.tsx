@@ -105,6 +105,7 @@ const SideBar: React.FC<SidebarProps> = ({ urlData, onClickmenu }) => {
             alignItems="center"
             gap={1}
             marginTop={"350px !important"}
+            pb={"19px"}
           >
             <img
               src={img.src}

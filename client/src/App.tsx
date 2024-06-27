@@ -38,7 +38,8 @@ const SidebarAndDashboard = () => {
       <Box
         component="section"
         sx={{
-          height: "100vh",
+          maxHeight: "100%",
+          minHeight: "100vh",
           backgroundColor: "#006aff",
           px: 2,
           minWidth: "100px",
