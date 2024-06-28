@@ -8,12 +8,17 @@ import CardContent from "@mui/material/CardContent";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import { useNavigate } from "react-router-dom";
 const User = () => {
   const [open, setOpen] = useState(false);
   const toggleLogin = () => {
     setOpen(!open);
   };
+  const nav = useNavigate()
+  const handleLogout = ()=>{
+    localStorage.removeItem("token")
+    nav('/login')
+  }
   return (
     <>
       <Stack
@@ -77,7 +82,7 @@ const User = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">Login</Button>
+            <Button size="small" onClick={handleLogout}>Logout</Button>
           </CardActions>
         </Card>
       )}

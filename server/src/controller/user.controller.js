@@ -4,6 +4,7 @@ const joi = require("joi");
 const securedPassword = require("../utils/securePassword");
 const bcrypt = require("bcryptjs");
 const createSecretToken = require("../utils/secretToken");
+
 const addUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -56,9 +57,8 @@ const loginUser = async (req, res) => {
       return res.json(errorFunc(true, "Sign Up First"));
     }
     if (passwordMatch) {
-      console.log(token);
       res.status(200);
-      return res.json(errorFunc(false, "Loggin Successful", user));
+      return res.json(errorFunc(false, "Loggin Successful", {user,token}));
     } else {
       return res.json(errorFunc(true, "Wrong Password"));
     }

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -10,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { log } from "console";
 interface Credentials {
   username?: string;
   email: string;
@@ -22,20 +24,28 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const nav = useNavigate()
   const handleChange = (e: any) => {
     const name = e.target.name;
     const value = e.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
+  
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:4000/login", {
         email: inputs.email,
         password: inputs.password,
       });
-      console.log(response.data.message);
+      if(!response.data.is_error){
+        localStorage.setItem("token",response.data.data.token)
+        nav('/')
+      }else{
+        nav('/login')
+      }
     } catch (err) {
-      console.log("Error in sending data", err);
+      console.log(err)
+      nav('/login')
     }
   };
   const handleSignup = async () => {
@@ -43,7 +53,6 @@ const Login = () => {
       const response = await axios.post("http://localhost:4000/signup", {
         ...inputs,
       });
-      console.log(response.data.message);
     } catch (err) {
       console.log("Error in sending data", err);
     }
