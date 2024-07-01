@@ -24,28 +24,28 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const nav = useNavigate()
+  const nav = useNavigate();
   const handleChange = (e: any) => {
     const name = e.target.name;
     const value = e.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
-  
+
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:4000/login", {
         email: inputs.email,
         password: inputs.password,
       });
-      if(!response.data.is_error){
-        localStorage.setItem("token",response.data.data.token)
-        nav('/')
-      }else{
-        nav('/login')
+      if (!response.data.is_error) {
+        localStorage.setItem("token", response.data.data.token);
+        nav("/dashboard");
+      } else {
+        nav("/login");
       }
     } catch (err) {
-      console.log(err)
-      nav('/login')
+      console.log(err);
+      nav("/login");
     }
   };
   const handleSignup = async () => {
