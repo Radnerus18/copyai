@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Maincomp from "../components/main";
 import Login from "../components/login";
 const Dashboard = lazy(() => import("../components/dashboard/dashboard"));
-const Application = lazy(() => import("../components/application"));
+const Application = lazy(() => import("../components/application/application"));
 const Assets = lazy(() => import("../components/assets"));
 const PageNotfound = lazy(() => import("../components/page404"));
 const pathConstants = {
@@ -30,6 +30,7 @@ const routes: RouteConfiguration[] = [
       {
         path: pathConstants.Application,
         element: <Application />,
+        children: [],
       },
       {
         path: pathConstants.Assets,
