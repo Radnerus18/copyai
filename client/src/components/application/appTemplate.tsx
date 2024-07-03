@@ -1,13 +1,15 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useRef,useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import commonApi from '../../utilities/api'
 interface templateProps {
   img: any;
+  alt:string;
   caption1: React.ReactNode;
   caption2: React.ReactNode;
 }
 const Template: React.FC<templateProps> = (props) => {
-  const onDrop = useCallback((acceptedFiles: any) => {
+  const onDrop = useCallback((acceptedFiles: any) => {//drag and drop function
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
 
@@ -16,16 +18,32 @@ const Template: React.FC<templateProps> = (props) => {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result;
-        console.log(binaryStr, file);
+        const formData = new FormData();
+        formData.append('file',file)
+        commonApi('upload',formData)
       };
       reader.readAsArrayBuffer(file);
     });
   }, []);
+//to access hidden input element
+  const hiddenElement = useRef<HTMLInputElement>(null)
+  const accessHiddenInput = (e:any)=> {
+    if (hiddenElement.current) {
+      hiddenElement.current.click();
+    }
+  };
+
+  const handleFile = async (e:any)=>{//click function
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file',file)
+    commonApi('upload',formData)
+  }
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   const renderHTML = (htmlString: any) => {
     return <span dangerouslySetInnerHTML={{ __html: htmlString }} />;
   };
-
+  
   return (
     <>
       <Box
@@ -44,7 +62,7 @@ const Template: React.FC<templateProps> = (props) => {
         }}
         {...getRootProps()}
       >
-        <img src={props.img} alt="" />
+        <img src={props.img} alt={props.alt} />
         <input {...getInputProps()} />
         <Typography>{renderHTML(props.caption1)}</Typography>
       </Box>
@@ -64,11 +82,10 @@ const Template: React.FC<templateProps> = (props) => {
           p: 2,
         }}
       >
-        <img src={props.img} alt="" />
+        <img src={props.img} alt={props.alt} />
         <Typography>{renderHTML(props.caption2)}</Typography>
-        <Button variant="outlined" color="primary">
-          Upload
-        </Button>
+        <Button variant="outlined" onClick={accessHiddenInput}>Upload</Button>
+        <input ref={hiddenElement} type="file" name="Upload" id="fileInput" onInput={handleFile} style={{visibility:"hidden"}}/>
       </Box>
     </>
   );

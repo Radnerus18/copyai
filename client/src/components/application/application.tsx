@@ -7,6 +7,7 @@ import thumbImg from "../../assets/ai-images/table-extract-img.png";
 const Application = () => {
   const [tempProps, setTempProps] = useState({
     img: thumbImg,
+    alt:"Table extraction logo",
     c1: `Please drag and drop Images<br> or<br> PPT files which has tables`,
     c2: "Please upload the Images<br> or<br> PPT files which has tables",
   });
@@ -49,6 +50,7 @@ const Application = () => {
       >
         <Template
           img={tempProps.img}
+          alt={tempProps.alt}
           caption1={tempProps.c1}
           caption2={tempProps.c2}
         />

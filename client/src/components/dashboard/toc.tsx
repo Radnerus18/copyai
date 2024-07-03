@@ -109,7 +109,7 @@ function createData(
 const rows = [
   createData("Documnet. pdf", "pdf", 3.7, new Date()),
   createData("Documnet. csv", "csv", 25.0, new Date()),
-  createData("Documnet. pdf", "pdf", 16.0, new Date()),
+  createData("Documnet. word", "pdf", 16.0, new Date()),
 ].sort((a, b) => (a.fileSize < b.fileSize ? -1 : 1));
 const rowHead = ["File Name", "File Type", " File Size", "Date and Time"];
 const Toc = () => {

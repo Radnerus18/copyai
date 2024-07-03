@@ -27,7 +27,7 @@ const SecondRow = () => {
     >
       {secondRowImgs.map((item, index) => (
         <Grid
-          key={index}
+          key={`sr`+index}
           container
           direction="row"
           justifyContent="space-between"

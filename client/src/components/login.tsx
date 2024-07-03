@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { log } from "console";
+import commonApi from "../utilities/api";
 interface Credentials {
   username?: string;
   email: string;
@@ -33,16 +33,20 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/login", {
+      commonApi("login", {
         email: inputs.email,
         password: inputs.password,
-      });
-      if (!response.data.is_error) {
-        localStorage.setItem("token", response.data.data.token);
-        nav("/dashboard");
-      } else {
+      }).then(res => {
+        if (!res.data.is_error) {
+          localStorage.setItem("token", res.data.data.token);
+          nav("/dashboard");
+        } else {
+          nav("/login");
+        }
+      }).catch(err => {
+        console.log(err);
         nav("/login");
-      }
+      })
     } catch (err) {
       console.log(err);
       nav("/login");
